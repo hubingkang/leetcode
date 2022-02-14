@@ -59,15 +59,28 @@ var rob = function (nums) {
     /**
      * 方法3
      */
-    let prevMax = 0;
-    let currMax = 0;
+    // let prevMax = 0;
+    // let currMax = 0;
 
-    for (let i = 0; i < nums.length; i++) {
-        let temp = currMax;
-        currMax = Math.max(prevMax + nums[i], currMax);
-        prevMax = temp;
-    }
-    return currMax;
+    // for (let i = 0; i < nums.length; i++) {
+    //     let temp = currMax;
+    //     currMax = Math.max(prevMax + nums[i], currMax);
+    //     prevMax = temp;
+    // }
+    // return currMax;
+
+    /**
+     * 方法4
+     */
+     let len = nums.length
+     let dp_i_1 = 0, dp_i_2 = 0;
+     let dp_i = 0;
+     for (let i = len - 1; i >= 0; i--) {
+         dp_i = Math.max(dp_i_1, dp_i_2 + nums[i]);
+         dp_i_2 = dp_i_1;
+         dp_i_1 = dp_i;
+     }
+     return dp_i;
 };
 // @lc code=end
 
