@@ -17,15 +17,27 @@
  * @return {ListNode}
  */
 var reverseList = function(head) {
-  let prev = null;
-  let current = head;
-  while (current) {
-    const next = current.next;
-    current.next = prev;
-    prev = current;
-    current = next;
+  // 方法 1 通过新增链表
+  // let current = head;
+  // let previous = null;
+  // while(current) {
+  //   const node = current.next;
+  //   current.next = previous;
+  //   previous = current;
+  //   current = node;
+  // }
+
+  // return previous;
+
+  // 方法 2 通过递归实现
+  const reverse = (head) => {
+    if (head === null || head.next === null) return head;
+    const node = reverse(head.next);
+    head.next.next = head;
+    head.next = null;
+    return node;
   }
-  return prev;
+  return reverse(head)
 };
 // @lc code=end
 

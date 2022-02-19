@@ -19,22 +19,27 @@
  * @return {ListNode}
  */
 var reverseBetween = function(head, left, right) {
-  const dummy_node = new ListNode(-1);
-  dummy_node.next = head;
-  let pre = dummy_node
+  let successor = null;
+  // 反转以 head 为起点的 n 个节点，返回新的头结点
+  const reverseN = (head, n) => {
+    if (n === 1) {
+      // 相当于反转的开始节点
+      successor = head.next;
+      return head;
+    }
 
-  for (let i = 0; i < left - 1; i++) {
-    pre = pre.next;
+    const last = reverseN(head.next, n - 1);
+    head.next.next = head;
+    head.next = successor;
+    return last;
   }
 
-  let curr = pre.next;
-  for (let i = 0; i < right - left; i++) {
-    const next = curr.next;
-    curr.next = next.next
-    next.next = pre.next;
-    pre.next = next;
-  }
-  return dummy_node.next;
+  // base case
+  if (left == 1) {
+    return reverseN(head, right);
+  };
+  head.next = reverseBetween(head.next, left - 1, right - 1);
+  return head;
 };
 // @lc code=end
 
