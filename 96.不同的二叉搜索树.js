@@ -27,8 +27,6 @@ var numTrees = function(n) {
       const left = count(lo, mid - 1);
       const right = count(mid + 1, hi)
       res += left * right;
-
-      console.log('res', left, right, res)
     }
 
      // 将结果存入备忘录
