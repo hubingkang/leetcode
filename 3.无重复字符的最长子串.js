@@ -11,24 +11,44 @@
  */
 var lengthOfLongestSubstring = function(s) {
   // 双指针解法
-  let start = 0;
-  let maxLen = 0;
-  const len = s.length;
+  // let start = 0;
+  // let maxLen = 0;
+  // const len = s.length;
 
-  const map = new Map();
+  // const map = new Map();
 
-  for (let end = 0; end < len; end++) {
-    let alpha = s[end];
-    if (map.has(alpha)) {
-      // 取 start 较大的。
-      start = Math.max(start, map.get(alpha) + 1)
+  // for (let end = 0; end < len; end++) {
+  //   let alpha = s[end];
+  //   if (map.has(alpha)) {
+  //     // 取 start 较大的。
+  //     start = Math.max(start, map.get(alpha) + 1)
+  //   }
+
+  //   maxLen = Math.max(maxLen, end - start + 1);
+  //   map.set(alpha, end)
+  // }
+
+  // return maxLen;
+
+  // 滑动窗口
+  let res = 0;
+  const window = {};
+  let left = 0;
+  let right = 0;
+
+  while (right < s.length) {
+    const char = s[right];
+    window[char] = (window[char] || 0) + 1;
+    right++
+    while (window[char] > 1){
+      const b = s[left];
+      window[b]--;
+      left++;
     }
 
-    maxLen = Math.max(maxLen, end - start + 1);
-    map.set(alpha, end)
+    res = Math.max(res, right - left);
   }
-
-  return maxLen;
+  return res;
 };
 // var lengthOfLongestSubstring = function(s) {
 //   let str = '';
