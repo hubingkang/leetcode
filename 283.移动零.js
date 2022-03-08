@@ -10,34 +10,20 @@
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 var moveZeroes = function(nums) {
-    // // j是最后一个零元素的位置
-    // let j = 0;
-    // for (let i = 0; i < nums.length; i++) {
-    //     if (nums[i] != 0) {
-    //         nums[j] = nums[i];
-    //         if (i != j) {
-    //             nums[i] = 0;
-    //         }
-    //         j++;
-    //     }
-    // }
+    let slow = 0;
+    let fast = 0;
 
-    // let j = 0;
-    // for (let i = 0; i < nums.length; i++) {
-    //     if (nums[i] != 0) {
-    //         [nums[j], nums[i]] = [nums[i], nums[j]];
-    //         j++
-    //     }
-    // }
-    let j = 0;
-    for (let i = 0; i < nums.length; i++) {
-        if (nums[i] != 0) {
-            nums[j] = nums[i];
-            if (i != j) {
-                nums[i] = 0;
-            }
-            j++;
-        }        
+    const len = nums.length;
+    while (fast < len) {
+        if (nums[fast] !== 0) {
+            nums[slow] = nums[fast];
+            slow++;
+        };
+        fast++;
     }
+    for (let i = slow; i < len; i++) {
+        nums[i] = 0;
+    };
+    return nums;
 };
 // @lc code=end
