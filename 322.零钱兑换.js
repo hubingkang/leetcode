@@ -45,29 +45,63 @@ var coinChange = function (coins, amount) {
     /**
      * 自上而下动态规划
      */
-    if (amount < 1) return 0;
+    // if (amount < 1) return 0;
 
-    const fn = (coins, rem, count) => {
-        if (rem < 0) return -1;
-        if (rem == 0) return 0;
+    // const fn = (coins, rem, count) => {
+    //     if (rem < 0) return -1;
+    //     if (rem == 0) return 0;
 
-        // 做缓存
-        if (count[rem - 1] != 0) return count[rem - 1];
+    //     // 做缓存
+    //     if (count[rem - 1] != 0) return count[rem - 1];
 
-        let min = Number.MAX_SAFE_INTEGER;
+    //     let min = Number.MAX_SAFE_INTEGER;
 
-        for (let i = 0; i < coins.length; i++) {
-            let res = fn(coins, rem - coins[i], count);
-            if (res >= 0 && res < min) {
-                min = 1 + res;
-            };
+    //     for (let i = 0; i < coins.length; i++) {
+    //         let res = fn(coins, rem - coins[i], count);
+    //         if (res >= 0 && res < min) {
+    //             min = 1 + res;
+    //         };
+    //     }
+
+    //     count[rem - 1] = (min === Number.MAX_SAFE_INTEGER) ? -1 : min;
+    //     return count[rem - 1];
+    // }
+
+    // return fn(coins, amount, new Array(amount).fill(0))
+
+    // const memo = [];
+    // const dp = (coins, amount) => {
+    //     if (amount < 0) return -1;
+    //     if (amount === 0) return 0;
+
+    //     if (memo[amount]) return memo[amount];
+        
+    //     let res = Number.MAX_SAFE_INTEGER;
+    //     for (let coin of coins) {
+    //         const subProblem = dp(coins, amount - coin)
+    //         // 子问题无解则跳过
+    //         if (subProblem == -1) continue;
+    //         // 在子问题中选择最优解，然后加一
+    //         res = Math.min(res, subProblem + 1);
+    //     }
+    //     memo[amount] = res === Number.MAX_SAFE_INTEGER ? -1 : res;
+    //     return memo[amount];
+    // }
+    // return dp(coins, amount);
+
+    // 自底向上
+    const dp = new Array(amount + 1).fill(Number.MAX_SAFE_INTEGER);
+    // base case
+    dp[0] = 0;
+    for (let i = 1; i < dp.length; i++) {
+        for (let coin of coins) {
+            // 越界，跳过
+            if (i - coin < 0) continue;
+            dp[i] = Math.min(dp[i], 1 + dp[i - coin]);
         }
-
-        count[rem - 1] = (min === Number.MAX_SAFE_INTEGER) ? -1 : min;
-        return count[rem - 1];
     }
 
-    return fn(coins, amount, new Array(amount).fill(0))
+    return dp[amount + 1] === Number.MAX_SAFE_INTEGER ? -1 : dp[amount]
 };
 // @lc code=end
 
