@@ -15,37 +15,32 @@
  */
 var findCheapestPrice = function(n, flights, src, dst, k) {
   const map = {};
-  for (let flight of flights) {
-    const [from, to, price] = flight;
+  for (let i = 0; i < flights.length; i++) {
+    const [from, to, price] = flights[i];
     if (map[to]) {
-      map[to].push([from, price])
+      map[to].push([from, price]);
     } else {
       map[to] = [[from, price]];
     }
   }
 
   const memo = new Array(n);
-  for (let i = 0; i < n; i++) {
+  for(let i = 0; i < n; i++) {
     memo[i] = new Array(k);
-  };
+  }
 
-  // 从 src 到 dst， k 步最小花费
   const dp = (dst, k) => {
-    if (src === dst) return 0; // 当前为目的地
-    if (k === 0 || map[dst] === undefined) return -1; // 次数过低，或者没有到达的航班，无法到达
-    
-    if (memo[dst][k]) return memo[dst][k];
-    
-    let res = Number.MAX_SAFE_INTEGER;
+    if (src === dst) return 0;
+    if (k === 0 || !map[dst]) return -1; // 表示次数用光了 或者不可达
+    if (memo[dst][k] !== undefined) return memo[dst][k];
+    let res = Infinity;
     for (let [from, price] of map[dst]) {
       const subProblem = dp(from, k - 1);
-      if (subProblem !== -1) {
-        res = Math.min(res, subProblem + price);
-      }
+      if (subProblem === -1) continue;
+      res = Math.min(res, price + subProblem);
     }
 
-    memo[dst][k] = (res === Number.MAX_SAFE_INTEGER ? -1 : res);
-    return memo[dst][k]
+    return memo[dst][k] = res === Infinity ? -1 : res;
   }
 
   return dp(dst, k + 1);

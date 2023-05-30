@@ -29,35 +29,32 @@ var minDistance = function(word1, word2) {
   // return dp(i, j);
 
   // 自底向上 利用 DP table 会消除重复计算的
-  const m = word1.length;
-  const n = word2.length;
-  // DP table
-  const dp = [];
-  for (let i = 0; i <= m; i++) {
-    dp[i] = [];
+  const m = word1.length
+  const n = word2.length
+  const memo = [];
+  for (let i = 0; i < m; i++) {
+    memo[i] = new Array(n).fill(-1)
   }
 
-  // base case
-  for (let i = 0; i <= m; i++) {
-    dp[i][0] = i;
-  }
+  const dp = (s1, i, s2, j) => {
+    if (i === -1) return j + 1;
+    if (j === -1) return i + 1;
 
-  // base case
-  for (let i = 0; i <= n; i++) {
-    dp[0][i] = i;
-  }
+    if (memo[i][j] !== -1) return memo[i][j];
 
-  for (let i = 1; i <= m; i++) {
-    for (let j = 1; j <= n; j++) {
-      // 因为 0 为 basecase 所以匹配的时候需要减 1
-      if (word1[i - 1] === word2[j - 1]) {
-        dp[i][j] = dp[i - 1][j - 1];
-      } else {
-        dp[i][j] = Math.min(dp[i][j - 1], dp[i - 1][j], dp[i - 1][j - 1]) + 1;
-      }
+    if (s1[i] === s2[j]) {
+      memo[i][j] = dp(s1, i - 1, s2, j - 1)
+    } else {
+      memo[i][j] = Math.min(
+        dp(s1, i - 1, s2, j - 1),
+        dp(s1, i - 1, s2, j),
+        dp(s1, i, s2, j - 1)
+      ) + 1
     }
+
+    return memo[i][j]
   }
 
-  return dp[m][n];
+  return dp(word1, m - 1, word2, n - 1);
 };
 // @lc code=end

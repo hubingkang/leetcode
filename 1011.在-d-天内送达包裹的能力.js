@@ -28,6 +28,8 @@ var shipWithinDays = function(weights, days) {
         cap -= weights[i];
         i++;
       }
+      console.log('needDays', count, needDays)
+
       needDays++;
     }
 

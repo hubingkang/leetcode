@@ -30,6 +30,7 @@ var reverseList = function(head) {
   // return previous;
 
   // 方法 2 通过递归实现
+  if (head == null) return null;
   const reverse = (head) => {
     if (head === null || head.next === null) return head;
     const node = reverse(head.next);
